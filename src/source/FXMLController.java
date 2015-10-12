@@ -33,6 +33,8 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -46,6 +48,8 @@ public class FXMLController implements Initializable {
    // @FXML
    // private Label label;
    String ip = null;
+   @FXML Rectangle connectionBlock;
+   @FXML Label connectionLabel;
     @FXML
     private void addHandler(ActionEvent event) {
         Dialog d = new Dialog();
@@ -58,6 +62,8 @@ public class FXMLController implements Initializable {
            
            Node root = FXMLLoader.load(getClass().getResource("FXML_NEW_SENSOR.fxml"));
            d.getDialogPane().setContent(root);
+           d.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
+           
            d.show();
            
        } catch (IOException ex) {
@@ -73,7 +79,7 @@ public class FXMLController implements Initializable {
         Dialog<String> d = new TextInputDialog();
         d.setTitle("Create New Connection");
         d.setHeaderText("Enter valid server IP in format xxx.xxx.xxx.xxx:port");
-        
+        boolean success = false;
         
        /**final Button btOk = (Button) d.getDialogPane().lookupButton(ButtonType.C);
         btOk.addEventFilter(ActionEvent.ACTION, bEvent -> {    
@@ -82,7 +88,7 @@ public class FXMLController implements Initializable {
         
             ip = d.showAndWait().get();
             if(ipValidator(ip)){
-                boolean success = DataTurbineSource.createConnection(ip);
+                success = DataTurbineSource.createConnection(ip);
                 if(!success){
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setContentText("Connection Failed");
@@ -93,7 +99,11 @@ public class FXMLController implements Initializable {
                a.setContentText("Invalid IP Entered");
                a.showAndWait();
             }
-            
+            if(success){
+                connectionLabel.setText("Connected");
+                connectionBlock.setFill(Color.GREEN);
+                        
+            }
      
        
     }
