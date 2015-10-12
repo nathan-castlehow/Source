@@ -10,15 +10,22 @@ package source;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -41,7 +48,21 @@ public class FXMLController implements Initializable {
    String ip = null;
     @FXML
     private void addHandler(ActionEvent event) {
-        Src s = new Src();
+        Dialog d = new Dialog();
+        //Node content = content = FXMLLoader.load(getClass().getResource("check-dialog.fxml"));
+        d.setResizable(false);
+    
+      
+        
+       try {
+           
+           Node root = FXMLLoader.load(getClass().getResource("FXML_NEW_SENSOR.fxml"));
+           d.getDialogPane().setContent(root);
+           d.show();
+           
+       } catch (IOException ex) {
+           Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+       }
         
        
     }

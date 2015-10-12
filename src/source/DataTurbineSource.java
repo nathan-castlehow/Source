@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -46,7 +47,7 @@ public class DataTurbineSource extends Application {
         stage.setScene(scene);
         stage.setMinHeight(430);
         stage.setMinWidth(600);
-        
+        stage.getIcons().add(new Image("file:Sea_Wave_PNG.png"));
         stage.show();
     }
     public Stage getStage(){
