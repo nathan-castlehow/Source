@@ -62,8 +62,7 @@ public class FXMLController implements Initializable {
            
            Node root = FXMLLoader.load(getClass().getResource("FXML_NEW_SENSOR.fxml"));
            d.getDialogPane().setContent(root);
-           d.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
-           
+           d.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
            d.show();
            
        } catch (IOException ex) {

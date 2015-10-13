@@ -30,7 +30,10 @@ public class FXML_NEW_SENSORController implements Initializable {
     @FXML private ChoiceBox delimiterOptions;
     @FXML private TextArea infoLineNumber;
     @FXML private TextArea dataLineNumber;
+    @FXML private TextArea timeStampColumn;
     @FXML private CheckBox appendMode;
+    
+    private File f = null;
     /**
      * Initializes the controller class.
      */
@@ -44,13 +47,22 @@ public class FXML_NEW_SENSORController implements Initializable {
         FileChooser d = new FileChooser();
         d.setTitle("Choose data file");
         Stage s = new Stage();
-        File f = d.showOpenDialog(s);
+        f = d.showOpenDialog(s);
         fileLabel.setText(f.toString());
         
     }
     @FXML
     private void inputHandler(){
-        
+        Sensor s = new Sensor();
+        s.setName(sensorName.getText());
+        s.setDelimiter(delimiterOptions.getValue());
+        s.setinfoLineNumber(Integer.parseInt(infoLineNumber.getText()));
+        s.dataLineNumber(Integer.parseInt(dataLineNumber.getText()));
+        s.setAppendMode(appendMode.isPressed());
+        s.setFile(f);
+        s.setTimeStampColumn(Integer.parseInt(timeStampColumn.getText()));
+        s.connect();
+       
     }
     
     

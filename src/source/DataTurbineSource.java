@@ -37,7 +37,9 @@ import javafx.stage.Stage;
 public class DataTurbineSource extends Application {
     //final static String sourceName = "Source1";
     static Source s = null;
+    static SensorHandler SH;
     Stage stage;
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXML.fxml"));
@@ -57,6 +59,7 @@ public class DataTurbineSource extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        SH = new SensorHandler();
         launch(args);
     }
     //@Override
@@ -96,6 +99,10 @@ public static boolean createConnection(String ip){
         return true;
 
 }
+public static SensorHandler getSH(){
+    return SH;
+}
+    
 }
 
 /**

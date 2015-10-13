@@ -35,6 +35,12 @@
                         <ChoiceBox fx:id="delimiterOptions" prefWidth="150.0" />
                      </children>
                   </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Time Stamp Column No." />
+                        <TextArea fx:id="timeStampColumn" prefHeight="31.0" prefWidth="200.0" />
+                     </children>
+                  </HBox>
                   <HBox layoutX="10.0" layoutY="299.0" prefHeight="20.0" prefWidth="200.0" spacing="40.0">
                      <children>
                         <Label text="Info Line Number" />
@@ -64,6 +70,7 @@
                         <CheckBox fx:id="appendMode" mnemonicParsing="false" />
                      </children>
                   </HBox>
+                  <Button mnemonicParsing="false" onAction="#inputHandler" text="OK" />
                </children>
             </VBox>
          </content>
