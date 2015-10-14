@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -18,6 +20,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * FXML Controller class
@@ -33,13 +36,17 @@ public class FXML_NEW_SENSORController implements Initializable {
     @FXML private TextArea timeStampColumn;
     @FXML private CheckBox appendMode;
     
+    
     private File f = null;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        for(Delimiter dr : Delimiter.values())
+         {
+             delimiterOptions.getItems().add(dr.name());
+        }
     }    
     
     @FXML
@@ -52,7 +59,10 @@ public class FXML_NEW_SENSORController implements Initializable {
         
     }
     @FXML
-    private void inputHandler(){
+    private void inputHandler(ActionEvent e){
+        
+        Stage addWindow = (Stage) ((Node) (e.getSource())).getScene().getWindow();
+        addWindow.close();
         Sensor s = new Sensor();
         s.setName(sensorName.getText());
         s.setDelimiter(delimiterOptions.getValue());

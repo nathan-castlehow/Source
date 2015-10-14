@@ -30,7 +30,7 @@ public class SensorHandler {
 
     public static void runSensor(Sensor s){  
        
-        ch.PutMime(s.channelNumber,"application/octet-stream");
+        //ch.PutMime(s.channelNumber,"application/octet-stream");
         
         SourceReader sr = new SourceReader(ch,s);
         sr.start();

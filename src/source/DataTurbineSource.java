@@ -50,6 +50,7 @@ public class DataTurbineSource extends Application {
         stage.setMinHeight(430);
         stage.setMinWidth(600);
         stage.getIcons().add(new Image("file:Sea_Wave_PNG.png"));
+        
         stage.show();
     }
     public Stage getStage(){
@@ -60,6 +61,7 @@ public class DataTurbineSource extends Application {
      */
     public static void main(String[] args) {
         SH = new SensorHandler();
+        
         launch(args);
     }
     //@Override

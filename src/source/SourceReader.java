@@ -38,7 +38,7 @@ public class SourceReader extends Thread{
         this.infoLineNumber = s.infoLineNumber;
         this.dataLineNumber = s.dataLineNumber;
         this.s = s;
-        timeIndex = 0;
+        timeIndex = s.timeStampColumn - 1;
   
         
     }
@@ -49,11 +49,11 @@ public class SourceReader extends Thread{
                         //get infoLine
 			String line = null;
                         String infoLine = null;
-			int counter = 0;
-			for (counter = 0 ; counter <= this.infoLineNumber; counter++){
+			int counter = 1;
+			for (counter = 0 ; counter <= this.infoLineNumber - 1; counter++){
                             infoLine = b.readLine();
                         }
-                        
+                        System.out.println(infoLine);
                      String fields[] = infoLine.split(s.d.toString());
                      channel = new int[fields.length];
                      
@@ -67,13 +67,19 @@ public class SourceReader extends Thread{
                              }
                          }
                         
+                         for(int j = counter; j < s.dataLineNumber;j++){
+                             b.readLine();
+                         }
                         
                         while(true){
                             line = b.readLine();
+                            System.out.println(line);
                             if(line==null){
                                 //wait
                             }else{
                                 String[] lineSplit = line.split(s.d.toString());
+                                System.out.println(s.d.toString());
+                                System.out.println(lineSplit[timeIndex]);
                                 double time = getRbnbTimestamp(lineSplit[timeIndex]);
                                 
                                 for(int j = 0; j<lineSplit.length; j++){
@@ -91,11 +97,6 @@ public class SourceReader extends Thread{
                             }
                         }
                      }
-    
-                        
-                       
-                        
-			
 			//return line;
                 }catch (IOException e) {
 			logger.severe("Loggernet file doesn't exist");
@@ -124,7 +125,8 @@ public class SourceReader extends Thread{
 		// time
 		retval.append(".00000");
 		String iso8601String = retval.toString();
-		logger.fine("ISO8601:" + iso8601String);
+                System.out.println(iso8601String);
+		//logger.fine("ISO8601:" + iso8601String);
 		
 		ISOtoRbnbTime rbnbTimeConvert = new ISOtoRbnbTime(iso8601String);
 		
