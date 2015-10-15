@@ -38,12 +38,13 @@ public class SensorHandler {
     public static void runSensor(Sensor s){  
        
         //ch.PutMime(s.channelNumber,"application/octet-stream");
-        sensors ++;
-        if(sensors ==1){
-            CMapFlush CMF = new CMapFlush(RBS,ch);
-            CMF.start();
-        }
-        SourceReader sr = new SourceReader(ch,s);
+//        sensors ++;
+//        if(sensors ==1){
+//            CMapFlush CMF = new CMapFlush(RBS,ch);
+//            CMF.start();
+//        }
+        
+        SourceReader sr = new SourceReader(RBS,ch,s);
         sr.start();
         
     }

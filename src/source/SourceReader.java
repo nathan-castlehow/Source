@@ -7,6 +7,7 @@ package source;
 
 import com.rbnb.sapi.ChannelMap;
 import com.rbnb.sapi.SAPIException;
+import com.rbnb.sapi.Source;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,16 +32,17 @@ public class SourceReader extends Thread{
     int infoLineNumber;
     int timeIndex;
     Sensor s;
-    
-    SourceReader(ChannelMap m, Sensor s){
+    Source RBS;
+    SourceReader(Source RBS,ChannelMap m, Sensor s){
         this.m = m;
         //this.channel = 0;
         this.fileName = s.f;
         this.infoLineNumber = s.infoLineNumber - 1;
         this.dataLineNumber = s.dataLineNumber - 1;
         this.s = s;
+        this.RBS = RBS;
         timeIndex = s.timeStampColumn - 1;
-  
+        
         
     }
     public void run(){
@@ -60,8 +62,8 @@ public class SourceReader extends Thread{
 
              for(int i = 0; i<fields.length; i++){
                  //if(!ignore(i)){
-                     System.out.println("field" + i);
-                     System.out.println("Length" + fields.length);
+                     //System.out.println("field" + i);
+                     //System.out.println("Length" + fields.length);
                      try {
                          channel[i] = m.Add(fields[i]);
                          m.PutMime(channel[i], "application/octet-stream");
@@ -75,21 +77,26 @@ public class SourceReader extends Thread{
                      b.readLine();
                  }
                  
-                 for(int l = 0; l<channel.length;l++){
-                     System.out.println(channel[l]);
-                 }
+//                 for(int l = 0; l<channel.length;l++){
+//                     System.out.println(channel[l]);
+//                 }
 
                 while(true){
+                    try {
+                        sleep(30);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     line = b.readLine();
-                    System.out.println(line);
+                    //System.out.println(line);
                     if(line==null){
                         //wait
                     }else{
                         String[] lineSplit = line.split(s.d.toString());
                         //System.out.println(s.d.toString());
-                        for (int z = 0; z < lineSplit.length; z++) {
-                            System.out.println("LS " + z + ": " + lineSplit[z]);
-                        }
+                        //for (int z = 0; z < lineSplit.length; z++) {
+                          //  System.out.println("LS " + z + ": " + lineSplit[z]);
+                        //}
 
                         double time = getRbnbTimestamp(lineSplit[timeIndex]);
                         
@@ -97,8 +104,13 @@ public class SourceReader extends Thread{
                         for(String split : lineSplit){
                             if(x != 0) {
                                 try {
+                                    m.PutTime(time, 1);
                                     m.PutDataAsString(channel[x],split);//channel[jj]
-                                    System.out.println(x + ":" + split);
+                                    //System.out.println(x + ":" + split);
+                                    System.out.println(split);
+                                    System.out.println("Flush" + RBS.Flush(m));
+               
+           
                                 } catch (SAPIException ex) {
                                     ex.printStackTrace();
                                    // Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,7 +120,7 @@ public class SourceReader extends Thread{
                         }
 
 //                        for(int jj = 0; jj<lineSplit.length; jj++){
-//                            //m.PutTime(time, 1);
+//                            
 //                            if(jj != 0){
 //                                try {
 //                                    m.PutDataAsString(jj,lineSplit[jj]);//channel[jj]

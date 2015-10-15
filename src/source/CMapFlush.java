@@ -43,9 +43,9 @@ public class CMapFlush extends Thread {
 public void run(){
     while (true){
             try {
-              sapiSrc.Flush(m);
-              System.out.println("Flush");
-                sleep(10);
+              
+              System.out.println("Flush" + sapiSrc.Flush(m));
+                sleep(20);
             } catch (SAPIException ex) {
                 Logger.getLogger(CMapFlush.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
