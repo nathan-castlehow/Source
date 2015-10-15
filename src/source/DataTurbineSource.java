@@ -38,7 +38,7 @@ public class DataTurbineSource extends Application {
     //final static String sourceName = "Source1";
     static Source s = null;
     static SensorHandler SH;
-    Stage stage;
+    static Stage stage;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -53,15 +53,13 @@ public class DataTurbineSource extends Application {
         
         stage.show();
     }
-    public Stage getStage(){
+    static public Stage getStage(){
         return stage;
     }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SH = new SensorHandler();
-        
         launch(args);
     }
     //@Override
@@ -85,6 +83,7 @@ public static boolean createConnection(String ip){
     ConnectionManager c = new ConnectionManager(ip);
         try {
             s = c.connect();
+            SH = new SensorHandler(s);
             //try {
         } catch (SAPIException | IOException ex) {
             Logger.getLogger(DataTurbineSource.class.getName()).log(Level.SEVERE, null, ex);

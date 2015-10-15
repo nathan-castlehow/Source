@@ -32,7 +32,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <ScrollPane hbarPolicy="NEVER" layoutY="29.0" prefHeight="372.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+      <ScrollPane fx:id="sensors" hbarPolicy="NEVER" layoutY="29.0" prefHeight="372.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
          <content>
             <HBox alignment="TOP_CENTER" mouseTransparent="true" prefHeight="100.0" prefWidth="602.0" spacing="80.0">
                <children>

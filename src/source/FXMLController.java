@@ -32,6 +32,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -50,6 +51,8 @@ public class FXMLController implements Initializable {
    String ip = null;
    @FXML Rectangle connectionBlock;
    @FXML Label connectionLabel;
+   @FXML static ScrollPane sensors;
+
     @FXML
     private void addHandler(ActionEvent event) {
         Dialog d = new Dialog();
@@ -110,6 +113,9 @@ public class FXMLController implements Initializable {
     private String getResult(String d){
         
         return d;
+    }
+    public static ScrollPane getSensorPane(){
+        return sensors;
     }
     
      @FXML

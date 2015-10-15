@@ -8,6 +8,7 @@ package source;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +17,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -72,6 +75,13 @@ public class FXML_NEW_SENSORController implements Initializable {
         s.setFile(f);
         s.setTimeStampColumn(Integer.parseInt(timeStampColumn.getText()));
         s.connect();
+        //Stage primary = DataTurbineSource.getStage();
+        //HBox h = new HBox();
+        //HBox.
+        //ScrollPane p;
+        //p = FXMLController.getSensorPane();
+        //Node n = p.getContent();
+       
        
     }
     

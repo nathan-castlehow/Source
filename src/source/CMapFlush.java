@@ -24,6 +24,8 @@ public class CMapFlush extends Thread {
     public CMapFlush(Source sapiSrc, ChannelMap m){
         this.m = m;
         this.sapiSrc = sapiSrc;
+       // System.out.println("Map flush initialized");
+        System.out.println(sapiSrc);
     }
     
     /**private void postData(double[] someData) throws SAPIException {
@@ -42,6 +44,7 @@ public void run(){
     while (true){
             try {
                 sapiSrc.Flush(m);
+              //  System.out.println("Flush");
                 sleep(1);
             } catch (SAPIException ex) {
                 Logger.getLogger(CMapFlush.class.getName()).log(Level.SEVERE, null, ex);
@@ -50,12 +53,13 @@ public void run(){
             }
     }
 }
+}
     
-     public void start(){
+   /**  public void start(){
         t = new Thread(this,"T1");
         t.start();
     }
-}
+}**/
 
 
 
