@@ -8,6 +8,8 @@ package source;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
+import javafx.animation.Transition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +26,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -38,9 +41,11 @@ public class FXML_NEW_SENSORController implements Initializable {
     @FXML private TextArea dataLineNumber;
     @FXML private TextArea timeStampColumn;
     @FXML private CheckBox appendMode;
+    @FXML private Label fileDirLabel;
     
     
     private File f = null;
+    private boolean selected = true;
     /**
      * Initializes the controller class.
      */
@@ -50,31 +55,54 @@ public class FXML_NEW_SENSORController implements Initializable {
          {
              delimiterOptions.getItems().add(dr.name());
         }
+        appendMode.setSelected(true);
     }    
     
     @FXML
     private void fileBrowser(ActionEvent e){
-        FileChooser d = new FileChooser();
-        d.setTitle("Choose data file");
         Stage s = new Stage();
-        f = d.showOpenDialog(s);
-        fileLabel.setText(f.toString());
-        
+        if(selected){
+            FileChooser d = new FileChooser();
+            d.setTitle("Choose data file");
+            f = d.showOpenDialog(s);
+            String[] filePath = f.toString().split(File.separator);
+            fileLabel.setText(filePath[filePath.length -1]);
+        }
+        else{
+            DirectoryChooser d = new DirectoryChooser();
+            d.setTitle("Choose Directory");
+            File dir = d.showDialog(s);
+            String[] filePath = dir.toString().split(File.separator);
+            fileLabel.setText(filePath[filePath.length -1]);
+        }
     }
     @FXML
     private void inputHandler(ActionEvent e){
         
-        Stage addWindow = (Stage) ((Node) (e.getSource())).getScene().getWindow();
-        addWindow.close();
+        
+        
+        
         Sensor s = new Sensor();
-        s.setName(sensorName.getText());
+        boolean valid = true;
+        boolean s1 = valEmp(sensorName.getText()) || valEmp(delimiterOptions.getValue().toString());
+        boolean s2 = valEmp(infoLineNumber.getText()) || valEmp(dataLineNumber.getText());
+        boolean s3 = f == null || valEmp(timeStampColumn.getText());
+        if( s1||s2||s3  ){
+            
+        }else{
+        
         s.setDelimiter(delimiterOptions.getValue());
+        s.setName(sensorName.getText());
         s.setinfoLineNumber(Integer.parseInt(infoLineNumber.getText()));
         s.dataLineNumber(Integer.parseInt(dataLineNumber.getText()));
         s.setAppendMode(appendMode.isPressed());
         s.setFile(f);
         s.setTimeStampColumn(Integer.parseInt(timeStampColumn.getText()));
+        
+        Stage addWindow = (Stage) ((Node) (e.getSource())).getScene().getWindow();
+        addWindow.close();
         s.connect();
+        }
         //Stage primary = DataTurbineSource.getStage();
         //HBox h = new HBox();
         //HBox.
@@ -84,7 +112,21 @@ public class FXML_NEW_SENSORController implements Initializable {
        
        
     }
+    @FXML
+    private void appendChange(ActionEvent e){
+       // String NS ;
+         if(appendMode.isSelected()){
+           fileDirLabel.setText("File Path");
+            selected = true;
+        }else if(!appendMode.isSelected()){
+             fileDirLabel.setText("Dir Path");
+             selected = false;
+        }
+                
+    }
+    private boolean valEmp(String s){
+    return s =="";
     
-    
+    }
     
 }

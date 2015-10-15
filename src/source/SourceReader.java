@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static source.RBNBBase.logger;
@@ -61,13 +62,14 @@ public class SourceReader extends Thread{
              channel = new int[fields.length];
 
              for(int i = 0; i<fields.length; i++){
+                 m.PutTime(0.0 + i/100,0.0);
                  //if(!ignore(i)){
                      //System.out.println("field" + i);
                      //System.out.println("Length" + fields.length);
                      try {
-                         channel[i] = m.Add(fields[i]);
-                         m.PutMime(channel[i], "application/octet-stream");
-                         System.out.println("Channel Added");
+                        channel[i] = m.Add(fields[i].replace("\"",""));
+                        m.PutMime(channel[i], "application/octet-stream");
+                        System.out.println("Channel Added");
                      } catch (SAPIException ex) {
                          Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
                      }
@@ -97,28 +99,34 @@ public class SourceReader extends Thread{
                         //for (int z = 0; z < lineSplit.length; z++) {
                           //  System.out.println("LS " + z + ": " + lineSplit[z]);
                         //}
-
-                        double time = getRbnbTimestamp(lineSplit[timeIndex]);
+                        TimeZone tz = TimeZone.getDefault();
+                        //System.out.println(lineSplit[timeIndex].split("\"")[1]);
+                        double time = getRbnbTimestamp(lineSplit[timeIndex].replace("\"","")) + ((double) tz.getRawOffset() / 1000.0);
+                        System.out.println(time);
+                        //double time = getRbnbTimestamp();
                         
                         int x = 0;
+                        m.PutTime(time,0.0);
                         for(String split : lineSplit){
-                            if(x != 0) {
+                            //if(x != 0) {
                                 try {
-                                    m.PutTime(time, 1);
-                                    m.PutDataAsString(channel[x],split);//channel[jj]
+                                    
+                                    m.PutDataAsString(channel[x],split.replace("\"",""));//channel[jj]
                                     //System.out.println(x + ":" + split);
-                                    System.out.println(split);
-                                    System.out.println("Flush" + RBS.Flush(m));
+                                   
                
            
                                 } catch (SAPIException ex) {
                                     ex.printStackTrace();
                                    // Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                            }
+                            //}
                             x++;
                         }
-
+                        try {
+                            //System.out.println(split);
+                            System.out.println("Flush" + RBS.Flush(m));
+                            
 //                        for(int jj = 0; jj<lineSplit.length; jj++){
 //                            
 //                            if(jj != 0){
@@ -131,6 +139,9 @@ public class SourceReader extends Thread{
 //                                }
 //                                }
 //                        }
+                        } catch (SAPIException ex) {
+                            Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
+                        }
 
 
                     }
@@ -156,6 +167,7 @@ public class SourceReader extends Thread{
 		/*! @note ISORbnbTime uses ISO8601 timestamp, e.g. 2003-08-12T19:21:22.30095 */
 		/*! @note from loggernet: "2007-11-12 07:30:00" */
 		String[] loggernetDateTokens = loggernetDate.split(" ");
+                System.out.println("length" + loggernetDateTokens.length);
 		StringBuffer retval = new StringBuffer();
 		
 		retval.append(loggernetDateTokens[0]);
@@ -169,8 +181,8 @@ public class SourceReader extends Thread{
 		
 		ISOtoRbnbTime rbnbTimeConvert = new ISOtoRbnbTime(iso8601String);
 		
-		//System.out.println ("original date string = " + loggernetDate);
-		//System.out.println ("ISO date string = " + iso8601String);
+		System.out.println ("original date string = " + loggernetDate);
+                System.out.println ("ISO date string = " + iso8601String);
 		
 		return rbnbTimeConvert.getValue();
 	}

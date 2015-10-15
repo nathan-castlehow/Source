@@ -53,21 +53,21 @@
                         <TextArea fx:id="dataLineNumber" prefHeight="22.0" prefWidth="200.0" />
                      </children>
                   </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0" spacing="50.0">
+                     <children>
+                        <Label text="Append Mode?" />
+                        <CheckBox fx:id="appendMode" mnemonicParsing="false" onAction="#appendChange" />
+                     </children>
+                  </HBox>
                   <HBox layoutX="10.0" layoutY="280.0" prefHeight="20.0" prefWidth="200.0" spacing="90.0">
                      <children>
-                        <Label text="File Path" />
+                        <Label fx:id="fileDirLabel" text="File Path" />
                         <Label fx:id="fileLabel" prefHeight="16.0" text="..." />
                         <Button mnemonicParsing="false" onAction="#fileBrowser" prefHeight="26.0" prefWidth="80.0" text="Browse">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Button>
-                     </children>
-                  </HBox>
-                  <HBox layoutX="10.0" layoutY="262.0" prefHeight="20.0" prefWidth="200.0" spacing="50.0">
-                     <children>
-                        <Label text="Append Mode?" />
-                        <CheckBox fx:id="appendMode" mnemonicParsing="false" />
                      </children>
                   </HBox>
                   <Button mnemonicParsing="false" onAction="#inputHandler" text="OK" />
