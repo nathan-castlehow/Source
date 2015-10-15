@@ -60,6 +60,8 @@ public class SourceReader extends Thread{
 
              for(int i = 0; i<fields.length; i++){
                  //if(!ignore(i)){
+                     System.out.println("field" + i);
+                     System.out.println("Length" + fields.length);
                      try {
                          channel[i] = m.Add(fields[i]);
                          m.PutMime(channel[i], "application/octet-stream");
@@ -67,10 +69,14 @@ public class SourceReader extends Thread{
                      } catch (SAPIException ex) {
                          Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
                      }
-                 //}
+                 }
 
                  for(int j = counter; j < s.dataLineNumber;j++){
                      b.readLine();
+                 }
+                 
+                 for(int l = 0; l<channel.length;l++){
+                     System.out.println(channel[l]);
                  }
 
                 while(true){
@@ -91,7 +97,7 @@ public class SourceReader extends Thread{
                         for(String split : lineSplit){
                             if(x != 0) {
                                 try {
-                                    m.PutDataAsString(x,split);//channel[jj]
+                                    m.PutDataAsString(channel[x],split);//channel[jj]
                                     System.out.println(x + ":" + split);
                                 } catch (SAPIException ex) {
                                     ex.printStackTrace();
@@ -118,8 +124,8 @@ public class SourceReader extends Thread{
                     }
                 }
              }
-                //return line;
-        }catch (IOException e) {
+    
+            catch (IOException e) {
                 logger.severe("Loggernet file doesn't exist");
                 //return null;
         }
