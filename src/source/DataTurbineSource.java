@@ -49,7 +49,7 @@ public class DataTurbineSource extends Application {
         stage.setScene(scene);
         stage.setMinHeight(430);
         stage.setMinWidth(600);
-        stage.getIcons().add(new Image("file:Sea_Wave_PNG.png"));
+        stage.getIcons().add(new Image("file:Sea_Wave_PNG.png"));//set window icon
         
         stage.show();
     }
@@ -78,7 +78,12 @@ public class DataTurbineSource extends Application {
      * primaryStage.setTitle("Hello World!"); primaryStage.setScene(scene);
      * primaryStage.show();
      */
-
+/**
+ * createConnection
+ * static method to initialize Sensor Handler and create connection Handler
+ * @param ip
+ * @return 
+ */
 public static boolean createConnection(String ip){
     ConnectionManager c = new ConnectionManager(ip);
         try {

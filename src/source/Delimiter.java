@@ -1,14 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author Nathan Castlehow
+ * @version 1.0
+ * ENUM CLASS for delimiters
  */
 package source;
 
-/**
- *
- * @author Natus
- */
 
     
 public enum Delimiter {

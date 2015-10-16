@@ -19,31 +19,23 @@ public class SensorHandler {
     static ChannelMap ch;
     static Source RBS;
     static int sensors;
+    
     SensorHandler(Source s){
        ch = new ChannelMap();
        RBS = s;
        sensors = 0;
-       System.out.println("RBS" + RBS);
-       
-       
+       System.out.println("RBS" + RBS);    
     }
     
     public static void  SHStartUp(){
         
-        
+        //ToDo
     }
     public static void SHShutDown(){
+        //ToDo
     }
 
     public static void runSensor(Sensor s){  
-       
-        //ch.PutMime(s.channelNumber,"application/octet-stream");
-//        sensors ++;
-//        if(sensors ==1){
-//            CMapFlush CMF = new CMapFlush(RBS,ch);
-//            CMF.start();
-//        }
-        
         SourceReader sr = new SourceReader(RBS,ch,s);
         sr.start();
         

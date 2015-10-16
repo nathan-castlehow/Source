@@ -1,7 +1,4 @@
-/*
- * @author Nathan Castlehow (21318883)
- *
- */
+
 package source;
 
 import com.rbnb.sapi.ChannelMap;
@@ -17,10 +14,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static source.RBNBBase.logger;
 
-/**
- *
- * @author Nathan Castlehow 
+/*
+ * Source Reader
+ * @author Nathan Castlehow (21318883)
  * @version 1.0
+ * Responsible for polling text files for new data
+ * Some code adapted from Loggernet Src
+ * Available at http://www.dataturbine.org/
  */
 public class SourceReader extends Thread{
     private Thread t;
@@ -33,6 +33,13 @@ public class SourceReader extends Thread{
     int timeIndex;
     Sensor s;
     Source RBS;
+    
+    /**
+     * Constructor for Source Reader
+     * @param RBS RBNB source
+     * @param m ChannelMap
+     * @param s sensor 
+     */
     SourceReader(Source RBS,ChannelMap m, Sensor s){
         this.m = m;
         //this.channel = 0;
@@ -45,6 +52,11 @@ public class SourceReader extends Thread{
         
         
     }
+    
+    /**
+     * Run
+     * run thread so it continues polling all the time
+     */
     public void run(){
         try {
                 b = new BufferedReader(new FileReader(fileName));
@@ -55,59 +67,48 @@ public class SourceReader extends Thread{
                 for (counter = 0 ; counter <= this.infoLineNumber; counter++){
                     infoLine = b.readLine();
                 }
-             System.out.println(infoLine);
-             String fields[] = infoLine.split(s.d.toString());
-             //System.out.println("Field" + fields);
-             channel = new int[fields.length];
+                System.out.println(infoLine);
+                String fields[] = infoLine.split(s.d.toString());
+                channel = new int[fields.length];
 
-             for(int i = 0; i<fields.length; i++){
-                 m.PutTime(0.0 + i/100,0.0);
-                 //if(!ignore(i)){
+                for(int i = 0; i<fields.length; i++){
+                    m.PutTime(0.0 + i/100,0.0);
+                 if(!ignore(i)){
                      //System.out.println("field" + i);
                      //System.out.println("Length" + fields.length);
-                     try {
+                    try {
                         channel[i] = m.Add(s.name + "/" + fields[i].replace("\"",""));
                         m.PutMime(channel[i], "application/octet-stream");
                         System.out.println("Channel Added");
-                     } catch (SAPIException ex) {
+                    } catch (SAPIException ex) {
                          Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
-                     }
+                    }
                  }
+                }
 
-                 for(int j = counter; j < s.dataLineNumber;j++){
+                for(int j = counter; j < s.dataLineNumber;j++){
                      b.readLine();
                  }
-                 
-//                 for(int l = 0; l<channel.length;l++){
-//                     System.out.println(channel[l]);
-//                 }
 
                 while(true){
-                    try {
-                        sleep(30);
+                    line = b.readLine();
+                    
+                    if(line==null){
+                        try {
+                        sleep(30000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    line = b.readLine();
-                    //System.out.println(line);
-                    if(line==null){
-                        //wait
                     }else{
                         String[] lineSplit = line.split(s.d.toString());
-                        //System.out.println(s.d.toString());
-                        //for (int z = 0; z < lineSplit.length; z++) {
-                          //  System.out.println("LS " + z + ": " + lineSplit[z]);
-                        //}
                         TimeZone tz = TimeZone.getDefault();
-                        //System.out.println(lineSplit[timeIndex].split("\"")[1]);
                         double time = getRbnbTimestamp(lineSplit[timeIndex].replace("\"","")) + ((double) tz.getRawOffset() / 1000.0);
                         System.out.println(time);
-                        //double time = getRbnbTimestamp();
                         
                         int x = 0;
                         m.PutTime(time,0.0);
                         for(String split : lineSplit){
-                            //if(x != 0) {
+                            if(!ignore(x)) {
                                 try {
                                     
                                     m.PutDataAsString(channel[x],split.replace("\"",""));//channel[jj]
@@ -119,25 +120,12 @@ public class SourceReader extends Thread{
                                     ex.printStackTrace();
                                    // Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                            //}
+                            }
                             x++;
                         }
                         try {
                             //System.out.println(split);
                             System.out.println("Flush" + RBS.Flush(m));
-                            
-//                        for(int jj = 0; jj<lineSplit.length; jj++){
-//                            
-//                            if(jj != 0){
-//                                try {
-//                                    m.PutDataAsString(jj,lineSplit[jj]);//channel[jj]
-//                                    System.out.println(jj + ":" + lineSplit[jj]);
-//                                } catch (SAPIException ex) {
-//                                    ex.printStackTrace();
-//                                   // Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
-//                                }
-//                                }
-//                        }
                         } catch (SAPIException ex) {
                             Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -157,11 +145,23 @@ public class SourceReader extends Thread{
    
     
 
-   
+   /**
+    * ignore
+    * checks whether column should be ignored such as timestamp column
+    * @param i column number
+    * @return whether the column should be ignored
+    */
     private boolean ignore(int i){
         return i==timeIndex;
     }
     
+    /**
+     * getRbnbTimeStamp
+     * Converts timestamp into double
+     * @param loggernetDate
+     * @return timestamp as double
+     * From LoggerNetSrc
+     */
     public static double getRbnbTimestamp(String loggernetDate) {
 		/*! @note ISORbnbTime uses ISO8601 timestamp, e.g. 2003-08-12T19:21:22.30095 */
 		/*! @note from loggernet: "2007-11-12 07:30:00" */

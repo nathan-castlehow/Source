@@ -1,8 +1,5 @@
 package source;
-/*
- *This file takes care of setting up a connection to the dataturbine server
- *
- */
+
 
 
 import com.rbnb.sapi.ChannelMap;
@@ -14,8 +11,9 @@ import java.util.logging.Logger;
 import source.Src;
 
 /**
- *
+ * This file takes care of setting up a connection to the dataturbine server
  * @author Natus
+ * @version 1.0
  */
 public class ConnectionManager {
     private Source sapiSrc = null;

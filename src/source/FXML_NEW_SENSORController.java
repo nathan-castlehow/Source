@@ -47,6 +47,7 @@ public class FXML_NEW_SENSORController implements Initializable {
     
     private File f = null;
     private boolean selected = true;
+    
     /**
      * Initializes the controller class.
      */
@@ -59,6 +60,11 @@ public class FXML_NEW_SENSORController implements Initializable {
         appendMode.setSelected(true);
     }    
     
+    /**
+     * fileBrowser
+     * Creates fileBrowser/DirBrowser to select sensor file
+     * @param e 
+     */
     @FXML
     private void fileBrowser(ActionEvent e){
         Stage s = new Stage();
@@ -77,12 +83,13 @@ public class FXML_NEW_SENSORController implements Initializable {
             fileLabel.setText(filePath[filePath.length -1]);
         }
     }
+    
+    /**
+     * inputHandler
+     * @param e 
+     */
     @FXML
     private void inputHandler(ActionEvent e){
-        
-        
-        
-        
         Sensor s = new Sensor();
         boolean valid = true;
         boolean s1 = valEmp(sensorName.getText()) || valEmp(delimiterOptions.getValue().toString());
