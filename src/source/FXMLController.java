@@ -12,11 +12,14 @@ package source;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -31,9 +34,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
@@ -51,16 +56,14 @@ public class FXMLController implements Initializable {
    String ip = null;
    @FXML Rectangle connectionBlock;
    @FXML Label connectionLabel;
-   @FXML static ScrollPane sensors;
+   @FXML static ListView sensors;
+   //static ListView<HBox> listView;
 
     @FXML
     private void addHandler(ActionEvent event) {
         Dialog d = new Dialog();
         //Node content = content = FXMLLoader.load(getClass().getResource("check-dialog.fxml"));
         d.setResizable(false);
-    
-      
-        
        try {
            
            Node root = FXMLLoader.load(getClass().getResource("FXML_NEW_SENSOR.fxml"));
@@ -114,9 +117,6 @@ public class FXMLController implements Initializable {
         
         return d;
     }
-    public static ScrollPane getSensorPane(){
-        return sensors;
-    }
     
      @FXML
     private void locationHandler(ActionEvent event) {
@@ -151,7 +151,7 @@ public class FXMLController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        //listView = new ListView<HBox>();
     }    
     
     private boolean ipValidator(String ip){
@@ -160,5 +160,29 @@ public class FXMLController implements Initializable {
         
     }
     
+    public static void add(Sensor s){
+            HBox h = new HBox();
+           
+            //name
+            Label l1 = new Label();
+            l1.setText(s.name);
+            
+            //path
+            Label l2 = new Label();
+            String[] fPath = s.f.toString().split(File.separator);
+            l2.setText(fPath[fPath.length - 1]);
+            
+            //append
+            Label l3 = new Label();
+            l3.setText(Boolean.toString(s.appendMode));
+            
+            Label l4 = new Label();
+            l4.setText("EDIT STUFF HERE");
+         
+            h.getChildren().addAll(l1,l2,l3,l4);
+            //boolean add = sensors.getItems();
+             
+    }
+    }
    
-}
+

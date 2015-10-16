@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author Nathan Castlehow (21318883)
+ *
  */
 package source;
 
@@ -67,7 +66,7 @@ public class SourceReader extends Thread{
                      //System.out.println("field" + i);
                      //System.out.println("Length" + fields.length);
                      try {
-                        channel[i] = m.Add(fields[i].replace("\"",""));
+                        channel[i] = m.Add(s.name + "/" + fields[i].replace("\"",""));
                         m.PutMime(channel[i], "application/octet-stream");
                         System.out.println("Channel Added");
                      } catch (SAPIException ex) {

@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -88,23 +89,26 @@ public class FXML_NEW_SENSORController implements Initializable {
         boolean s2 = valEmp(infoLineNumber.getText()) || valEmp(dataLineNumber.getText());
         boolean s3 = f == null || valEmp(timeStampColumn.getText());
         if( s1||s2||s3  ){
-            
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText("Please Complete All Fields");
+            a.showAndWait();
         }else{
         
-        s.setDelimiter(delimiterOptions.getValue());
-        s.setName(sensorName.getText());
-        s.setinfoLineNumber(Integer.parseInt(infoLineNumber.getText()));
-        s.dataLineNumber(Integer.parseInt(dataLineNumber.getText()));
-        s.setAppendMode(appendMode.isPressed());
-        s.setFile(f);
-        s.setTimeStampColumn(Integer.parseInt(timeStampColumn.getText()));
+            s.setDelimiter(delimiterOptions.getValue());
+            s.setName(sensorName.getText());
+            s.setinfoLineNumber(Integer.parseInt(infoLineNumber.getText()));
+            s.dataLineNumber(Integer.parseInt(dataLineNumber.getText()));
+            s.setAppendMode(appendMode.isPressed());
+            s.setFile(f);
+            s.setTimeStampColumn(Integer.parseInt(timeStampColumn.getText()));
         
-        Stage addWindow = (Stage) ((Node) (e.getSource())).getScene().getWindow();
-        addWindow.close();
-        s.connect();
+            Stage addWindow = (Stage) ((Node) (e.getSource())).getScene().getWindow();
+            addWindow.close();
+            s.connect();
+            Stage primary = DataTurbineSource.getStage();
+            
         }
-        //Stage primary = DataTurbineSource.getStage();
-        //HBox h = new HBox();
+        
         //HBox.
         //ScrollPane p;
         //p = FXMLController.getSensorPane();

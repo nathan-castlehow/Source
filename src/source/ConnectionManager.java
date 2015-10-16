@@ -1,7 +1,7 @@
-package source;/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+package source;
+/*
+ *This file takes care of setting up a connection to the dataturbine server
+ *
  */
 
 
@@ -20,17 +20,25 @@ import source.Src;
 public class ConnectionManager {
     private Source sapiSrc = null;
 	
-	protected ChannelMap cmap = null;
-	protected String[] channels = null;
-	protected String[] units = null;
-        private String serverName;
-        private String rbnbClientName;
-        private int rbnbCacheSize;
-        private int rbnbArchiveSize;
-        private int initialised = 0;
-        private int connected;
-        //private Logger logger;
-	
+    protected ChannelMap cmap = null;
+    protected String[] channels = null;
+    protected String[] units = null;
+    private String serverName;
+    private String rbnbClientName;
+    private int rbnbCacheSize;
+    private int rbnbArchiveSize;
+    private int initialised = 0;
+    private int connected;
+    //private Logger logger;
+
+   /**
+    * ConnectionManager
+    * Sets up structure for connection to Dataturbine server
+    * @param serverName
+    * @param rbnbClientName
+    * @param rbnbCacheSize
+    * @param rbnbArchiveSize 
+    */
     public ConnectionManager(String serverName,String rbnbClientName,int rbnbCacheSize, int rbnbArchiveSize) {
 		//Logger.getLogger(Src.class.getName());
                 this.serverName = serverName;
@@ -40,6 +48,14 @@ public class ConnectionManager {
                 initialised = 1;
 		
 	}
+    /**
+    * ConnectionManager
+    * Sets up structure for connection to Dataturbine server
+    * @param serverName
+    * @param rbnbClientName
+    * @param rbnbCacheSize
+    * @param rbnbArchiveSize 
+    */
     public ConnectionManager(String ip){
         //Logger.getLogger(Src.class.getName());
         this.serverName = ip;
@@ -48,6 +64,14 @@ public class ConnectionManager {
         this.rbnbArchiveSize = 1024;
         initialised = 1;
     }
+    
+    /**
+     * Connect
+     * Initiates connection to dataturbine server
+     * @return Source source connected to server
+     * @throws SAPIException
+     * @throws IOException 
+     */
     public Source connect() throws SAPIException, IOException{
         if (0 < rbnbArchiveSize) {
 			sapiSrc = new Source (rbnbCacheSize, "append", rbnbArchiveSize);
@@ -65,6 +89,10 @@ public class ConnectionManager {
                 return sapiSrc;
     }
     
+    /**
+     * Disconnect
+     * Disconnects source from daturbine server
+     */
     public void disconnect() {
 		if(sapiSrc == null || initialised == 0) {
 			return;
@@ -78,7 +106,11 @@ public class ConnectionManager {
 		//logger.config("Closed RBNB connection");
 	}
     
-    
+    /**
+     * isConnected
+     * Queries whether the connection was created
+     * @return connection status
+     */
     public boolean isConnected(){
         return connected == 1;
     }

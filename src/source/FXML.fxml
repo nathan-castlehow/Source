@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.chart.*?>
 <?import java.lang.*?>
@@ -32,29 +33,6 @@
           </Menu>
         </menus>
       </MenuBar>
-      <ScrollPane fx:id="sensors" hbarPolicy="NEVER" layoutY="29.0" prefHeight="372.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
-         <content>
-            <HBox alignment="TOP_CENTER" mouseTransparent="true" prefHeight="100.0" prefWidth="602.0" spacing="80.0">
-               <children>
-                  <Label text="SENSOR NAME" />
-                  <Label text="Sensor Description" />
-                  <LineChart prefHeight="150.0" prefWidth="203.0">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </LineChart>
-               </children>
-               <stylesheets>
-                  <URL value="@../../../Documents/SourceUI.css" />
-                  <URL value="@../../../Documents/SourceUI.css" />
-                  <URL value="@../../../Documents/SourceUI.css" />
-               </stylesheets>
-            </HBox>
-         </content>
-      </ScrollPane>
       <Pane id="connectionStatus" layoutX="375.0" layoutY="255.0" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="5.0">
          <children>
             <Label layoutX="1.0" layoutY="113.0" prefHeight="16.0" prefWidth="225.0" text="Status:" />
@@ -62,5 +40,13 @@
             <Rectangle id="statusBar" fx:id="connectionBlock" arcHeight="5.0" arcWidth="5.0" fill="#ff2d1f" height="16.0" layoutX="148.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" width="78.0" />
          </children>
       </Pane>
+      <TableView layoutX="-1.0" layoutY="29.0" prefHeight="319.0" prefWidth="600.0">
+        <columns>
+          <TableColumn prefWidth="110.0" text="Name" />
+          <TableColumn prefWidth="258.0" text="Path" />
+            <TableColumn minWidth="9.0" prefWidth="120.0" text="Append Mode" />
+            <TableColumn minWidth="0.0" prefWidth="110.0" text="Edit" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
