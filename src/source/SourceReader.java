@@ -107,21 +107,24 @@ public class SourceReader extends Thread{
                         
                         int x = 0;
                         m.PutTime(time,0.0);
+                        float [] [] array = new float[lineSplit.length][1];
                         for(String split : lineSplit){
                             if(!ignore(x)) {
-                                try {
-                                    
-                                    m.PutDataAsString(channel[x],split.replace("\"",""));//channel[jj]
-                                    //System.out.println(x + ":" + split);
-                                   
-               
+                                
+                                    array[x][0] = Float.parseFloat(split.replace("\"",""));
+                                    //channel[jj]
+                                    //System.out.println(x + ":" + split
            
-                                } catch (SAPIException ex) {
-                                    ex.printStackTrace();
-                                   // Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
-                                }
+       
                             }
                             x++;
+                        }
+                        for (x = 0; x < channel.length; x++) {
+                            try {
+                                m.PutDataAsFloat32(channel[x],array[x]);
+                            } catch (SAPIException ex) {
+                                Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                         try {
                             //System.out.println(split);
@@ -129,13 +132,11 @@ public class SourceReader extends Thread{
                         } catch (SAPIException ex) {
                             Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
+                        }
 
                     }
                 }
-             }
-    
-            catch (IOException e) {
+             catch (IOException e) {
                 logger.severe("Loggernet file doesn't exist");
                 //return null;
         }
