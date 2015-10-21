@@ -7,6 +7,7 @@ import com.rbnb.sapi.SAPIException;
 import com.rbnb.sapi.Source;
 import static source.RBNBBase.*;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import source.Src;
 
@@ -15,7 +16,7 @@ import source.Src;
  * @author Natus
  * @version 1.0
  */
-public class ConnectionManager {
+public class ConnectionManager extends Thread {
     private Source sapiSrc = null;
 	
     protected ChannelMap cmap = null;
@@ -112,7 +113,21 @@ public class ConnectionManager {
     public boolean isConnected(){
         return connected == 1;
     }
-
+    @Override
+    public void run(){
+        while(true){
+            if(!sapiSrc.VerifyConnection()){
+                
+            }
+            try {
+                sleep(10000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+            
+    }
 
     
 }

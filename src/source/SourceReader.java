@@ -40,8 +40,8 @@ public class SourceReader extends Thread{
      * @param m ChannelMap
      * @param s sensor 
      */
-    SourceReader(Source RBS,ChannelMap m, Sensor s){
-        this.m = m;
+    SourceReader(Source RBS, Sensor s){
+        this.m = new ChannelMap();
         //this.channel = 0;
         this.fileName = s.f;
         this.infoLineNumber = s.infoLineNumber - 1;

@@ -89,6 +89,7 @@ public static boolean createConnection(String ip){
         try {
             s = c.connect();
             SH = new SensorHandler(s);
+            c.start();
             //try {
         } catch (SAPIException | IOException ex) {
             Logger.getLogger(DataTurbineSource.class.getName()).log(Level.SEVERE, null, ex);

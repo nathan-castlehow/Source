@@ -16,12 +16,12 @@ import java.util.logging.Logger;
  * @author Natus
  */
 public class SensorHandler {
-    static ChannelMap ch;
+    //static ChannelMap ch;
     static Source RBS;
     static int sensors;
     
     SensorHandler(Source s){
-       ch = new ChannelMap();
+       //ch = new ChannelMap();
        RBS = s;
        sensors = 0;
        System.out.println("RBS" + RBS);    
@@ -36,7 +36,7 @@ public class SensorHandler {
     }
 
     public static void runSensor(Sensor s){  
-        SourceReader sr = new SourceReader(RBS,ch,s);
+        SourceReader sr = new SourceReader(RBS,s);
         sr.start();
         
     }

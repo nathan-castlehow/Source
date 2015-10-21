@@ -178,8 +178,8 @@ public class FXMLController implements Initializable {
             
             Label l4 = new Label();
             l4.setText("EDIT STUFF HERE");
-         
-            h.getChildren().addAll(l1,l2,l3,l4);
+            //Array.asList
+            //h.getChildren().addAll(l1,l2,l3,l4);
             //boolean add = sensors.getItems();
              
     }
