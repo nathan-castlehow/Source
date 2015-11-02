@@ -6,6 +6,7 @@
 package source;
 
 import java.io.File;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  *
@@ -69,6 +70,32 @@ public class Sensor {
 
     void setTimeStampColumn(int columnNumber) {
         timeStampColumn = columnNumber;
+    }
+    SimpleStringProperty nameProperty(){
+        System.out.println("HERE\n\n\n\n\n\n");
+        return new SimpleStringProperty(name);
+    }
+    
+    File getF(){
+        return f;
+    }
+    String getAppendMode(){
+        return Boolean.toString(appendMode);
+    }
+    
+    
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name:" + name + "\n");
+        sb.append("Delimiter:" + d + "\n");
+        sb.append("TimeStampColumn:" + timeStampColumn + "\n");
+        sb.append("InfoLineNumber:" + infoLineNumber + "\n");
+        sb.append("DataLineNumber:" + dataLineNumber + "\n");
+        sb.append("File:" + f.toString() + "\n");
+        sb.append("AppendMode:" + appendMode + "\n");
+        
+        return sb.toString();
     }
    
 }

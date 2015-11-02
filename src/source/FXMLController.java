@@ -12,8 +12,6 @@ package source;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,28 +19,22 @@ import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -57,6 +49,14 @@ public class FXMLController implements Initializable {
    @FXML Rectangle connectionBlock;
    @FXML Label connectionLabel;
    @FXML static ListView sensors;
+   @FXML TableView sensorTable;
+   @FXML TableColumn senName;
+   @FXML TableColumn senPath;
+   @FXML TableColumn append;
+   @FXML TableColumn controls;
+   static ObservableList data = FXCollections.observableArrayList();
+   
+   
    //static ListView<HBox> listView;
 
     @FXML
@@ -85,11 +85,7 @@ public class FXMLController implements Initializable {
         d.setTitle("Create New Connection");
         d.setHeaderText("Enter valid server IP in format xxx.xxx.xxx.xxx:port");
         boolean success = false;
-        
-       /**final Button btOk = (Button) d.getDialogPane().lookupButton(ButtonType.C);
-        btOk.addEventFilter(ActionEvent.ACTION, bEvent -> {    
-            flag = false
-        });**/
+       
         
             ip = d.showAndWait().get();
             if(ipValidator(ip)){
@@ -112,13 +108,9 @@ public class FXMLController implements Initializable {
      
        
     }
+ 
     
-    private String getResult(String d){
-        
-        return d;
-    }
-    
-     @FXML
+    @FXML
     private void locationHandler(ActionEvent event) {
         DirectoryChooser d = new DirectoryChooser();
         d.setTitle("Choose directory for local storage");
@@ -126,7 +118,7 @@ public class FXMLController implements Initializable {
         File f = d.showDialog(s);
         System.out.println(f.toString());
     
- }
+    }
         
        
     
@@ -152,6 +144,27 @@ public class FXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //listView = new ListView<HBox>();
+    
+    senName.setCellValueFactory(
+    new PropertyValueFactory<Sensor,String>("name")
+    );
+    System.out.println("Complete");
+    senPath.setCellValueFactory(
+        new PropertyValueFactory<Sensor,File>("f")
+    );
+    System.out.println("Complete");
+    append.setCellValueFactory(
+         new PropertyValueFactory<Sensor,String>("appendMode")
+        );
+    System.out.println("Complete");
+    sensorTable.setItems(data);
+    System.out.println("Complete");
+     
+    
+    //controls.setCellValueFactory(
+      //  new PropertyValueFactory<InvoiceEntry,String>("price")
+    //);
+    
     }    
     
     private boolean ipValidator(String ip){
@@ -161,28 +174,8 @@ public class FXMLController implements Initializable {
     }
     
     public static void add(Sensor s){
-            HBox h = new HBox();
-           
-            //name
-            Label l1 = new Label();
-            l1.setText(s.name);
-            
-            //path
-            Label l2 = new Label();
-            String[] fPath = s.f.toString().split(File.separator);
-            l2.setText(fPath[fPath.length - 1]);
-            
-            //append
-            Label l3 = new Label();
-            l3.setText(Boolean.toString(s.appendMode));
-            
-            Label l4 = new Label();
-            l4.setText("EDIT STUFF HERE");
-            //Array.asList
-            //h.getChildren().addAll(l1,l2,l3,l4);
-            //boolean add = sensors.getItems();
-             
+            data.add(s);
     }
-    }
+}
    
 

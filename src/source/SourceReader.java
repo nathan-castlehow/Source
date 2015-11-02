@@ -5,9 +5,11 @@ import com.rbnb.sapi.ChannelMap;
 import com.rbnb.sapi.SAPIException;
 import com.rbnb.sapi.Source;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -31,8 +33,11 @@ public class SourceReader extends Thread{
     int dataLineNumber;
     int infoLineNumber;
     int timeIndex;
+    int lineCount;
     Sensor s;
     Source RBS;
+    boolean running;
+    
     
     /**
      * Constructor for Source Reader
@@ -49,6 +54,8 @@ public class SourceReader extends Thread{
         this.s = s;
         this.RBS = RBS;
         timeIndex = s.timeStampColumn - 1;
+        running = true;
+        lineCount = dataLineNumber;
         
         
     }
@@ -90,7 +97,8 @@ public class SourceReader extends Thread{
                      b.readLine();
                  }
 
-                while(true){
+                while(running){
+                    
                     line = b.readLine();
                     
                     if(line==null){
@@ -100,6 +108,7 @@ public class SourceReader extends Thread{
                         Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     }else{
+                      
                         String[] lineSplit = line.split(s.d.toString());
                         TimeZone tz = TimeZone.getDefault();
                         double time = getRbnbTimestamp(lineSplit[timeIndex].replace("\"","")) + ((double) tz.getRawOffset() / 1000.0);
@@ -127,8 +136,8 @@ public class SourceReader extends Thread{
                             }
                         }
                         try {
-                            //System.out.println(split);
                             System.out.println("Flush" + RBS.Flush(m));
+                            lineCount++;
                         } catch (SAPIException ex) {
                             Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -140,13 +149,17 @@ public class SourceReader extends Thread{
                 logger.severe("Loggernet file doesn't exist");
                 //return null;
         }
+        
+        
 
         
     }
    
+    public void stopSR(){
+        running = false;
+    }
     
-
-   /**
+    /**
     * ignore
     * checks whether column should be ignored such as timestamp column
     * @param i column number
@@ -156,6 +169,21 @@ public class SourceReader extends Thread{
         return i==timeIndex;
     }
     
+    private void shutDown(){
+    
+            BufferedWriter b;
+            try {
+                b = new BufferedWriter(new FileWriter(s.name + ".sensor"));
+                b.write(s.toString() + "\n LineCount:" + lineCount);
+            } catch (IOException ex) {
+                Logger.getLogger(SourceReader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+            
+        
+        
+    }
+    
     /**
      * getRbnbTimeStamp
      * Converts timestamp into double
@@ -163,7 +191,7 @@ public class SourceReader extends Thread{
      * @return timestamp as double
      * From LoggerNetSrc
      */
-    public static double getRbnbTimestamp(String loggernetDate) {
+    private static double getRbnbTimestamp(String loggernetDate) {
 		/*! @note ISORbnbTime uses ISO8601 timestamp, e.g. 2003-08-12T19:21:22.30095 */
 		/*! @note from loggernet: "2007-11-12 07:30:00" */
 		String[] loggernetDateTokens = loggernetDate.split(" ");

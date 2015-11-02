@@ -28,6 +28,7 @@ public class ConnectionManager extends Thread {
     private int rbnbArchiveSize;
     private int initialised = 0;
     private int connected;
+    private boolean isRunning;
     //private Logger logger;
 
    /**
@@ -45,6 +46,7 @@ public class ConnectionManager extends Thread {
                 this.rbnbCacheSize = rbnbCacheSize;
                 this.rbnbArchiveSize = rbnbArchiveSize;
                 initialised = 1;
+                isRunning = true;
 		
 	}
     /**
@@ -62,6 +64,7 @@ public class ConnectionManager extends Thread {
         this.rbnbCacheSize = 1024;
         this.rbnbArchiveSize = 1024;
         initialised = 1;
+        isRunning = true;
     }
     
     /**
@@ -93,6 +96,7 @@ public class ConnectionManager extends Thread {
      * Disconnects source from daturbine server
      */
     public void disconnect() {
+                stopConnectionCheck();
 		if(sapiSrc == null || initialised == 0) {
 			return;
 		}
@@ -105,6 +109,10 @@ public class ConnectionManager extends Thread {
 		//logger.config("Closed RBNB connection");
 	}
     
+    private void stopConnectionCheck(){
+        isRunning = false;
+    }
+    
     /**
      * isConnected
      * Queries whether the connection was created
@@ -115,7 +123,7 @@ public class ConnectionManager extends Thread {
     }
     @Override
     public void run(){
-        while(true){
+        while(isRunning){
             if(!sapiSrc.VerifyConnection()){
                 
             }

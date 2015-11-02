@@ -39,6 +39,7 @@ public class DataTurbineSource extends Application {
     static Source s = null;
     static SensorHandler SH;
     static Stage stage;
+    static ConnectionManager c;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -49,8 +50,7 @@ public class DataTurbineSource extends Application {
         stage.setScene(scene);
         stage.setMinHeight(430);
         stage.setMinWidth(600);
-        stage.getIcons().add(new Image("file:Sea_Wave_PNG.png"));//set window icon
-        
+        //stage.getIcons().add(new Image("file:Sea_Wave_PNG.png"));//set window icon
         stage.show();
     }
     static public Stage getStage(){
@@ -60,24 +60,18 @@ public class DataTurbineSource extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        // check directory for sensor files and load in
+        
         launch(args);
+        if(SH != null){
+            SH.SHShutDown();
+        }// gracefully shut down sensors on exit
+        if(c != null){
+            c.disconnect();
+        }// gracefully disconnect from server
+        
     }
-    //@Override
-    /**
-     * public void start(Stage primaryStage) { Button btn = new Button();
-     * btn.setText("Say 'Hello World'"); btn.setOnAction(new
-     * EventHandler<ActionEvent>() {
-     *
-     * @Override public void handle(ActionEvent event) {
-     * System.out.println("Hello World!"); } });
-     *
-     * StackPane root = new StackPane(); root.getChildren().add(btn);
-     *
-     * Scene scene = new Scene(root, 300, 250);
-     *
-     * primaryStage.setTitle("Hello World!"); primaryStage.setScene(scene);
-     * primaryStage.show();
-     */
+    
 /**
  * createConnection
  * static method to initialize Sensor Handler and create connection Handler
@@ -85,7 +79,7 @@ public class DataTurbineSource extends Application {
  * @return 
  */
 public static boolean createConnection(String ip){
-    ConnectionManager c = new ConnectionManager(ip);
+    c = new ConnectionManager(ip);
         try {
             s = c.connect();
             SH = new SensorHandler(s);

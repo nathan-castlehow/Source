@@ -112,6 +112,7 @@ public class FXML_NEW_SENSORController implements Initializable {
             Stage addWindow = (Stage) ((Node) (e.getSource())).getScene().getWindow();
             addWindow.close();
             s.connect();
+            FXMLController.add(s);
             Stage primary = DataTurbineSource.getStage();
             
         }
