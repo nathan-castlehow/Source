@@ -7,12 +7,17 @@ package source;
 
 import java.io.File;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
  * @author Natus
  */
 public class Sensor {
+    private SimpleStringProperty nameProp;
+    private SimpleStringProperty pathProp;
+    private SimpleStringProperty appendProp;
+    
     String name;
     Delimiter d;
     int infoLineNumber;
@@ -32,9 +37,31 @@ public class Sensor {
         appendMode = false;
     }
 
+    
     void setName(String text) {
         name = text;
+        nameProp = new SimpleStringProperty(name);
+        
     }
+    
+    public StringProperty namePropProperty() {
+        return nameProp;
+    }
+    
+    String getName(){
+        System.out.println("HERE\n\n\n\n\n\n");
+        return name;
+    }
+    
+    public StringProperty pathPropProperty() {
+        return pathProp;
+    }
+    
+    public StringProperty appendPropProperty() {
+        return appendProp;
+    }
+
+    
 
     void setDelimiter(Object value) {
         
@@ -51,17 +78,17 @@ public class Sensor {
 
     void setFile(File f) {
        this.f = f;
+       pathProp = new SimpleStringProperty(f.toString());
         
     }
 
     void setAppendMode(boolean pressed) {
         appendMode = pressed;
+        appendProp = new SimpleStringProperty(Boolean.toString(appendMode));
     }
 
     void connect() {
         DataTurbineSource.getSH().runSensor(this);
-        //SourceReader s = new SourceReader(name,);
-        
     }
 
     void setChannelValue(int channelValue) {
@@ -71,14 +98,15 @@ public class Sensor {
     void setTimeStampColumn(int columnNumber) {
         timeStampColumn = columnNumber;
     }
-    SimpleStringProperty nameProperty(){
-        System.out.println("HERE\n\n\n\n\n\n");
-        return new SimpleStringProperty(name);
-    }
+    
+   
+    
+    
     
     File getF(){
         return f;
     }
+    
     String getAppendMode(){
         return Boolean.toString(appendMode);
     }

@@ -105,7 +105,7 @@ public class FXML_NEW_SENSORController implements Initializable {
             s.setName(sensorName.getText());
             s.setinfoLineNumber(Integer.parseInt(infoLineNumber.getText()));
             s.dataLineNumber(Integer.parseInt(dataLineNumber.getText()));
-            s.setAppendMode(appendMode.isPressed());
+            s.setAppendMode(!appendMode.isPressed());
             s.setFile(f);
             s.setTimeStampColumn(Integer.parseInt(timeStampColumn.getText()));
         

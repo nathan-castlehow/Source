@@ -144,17 +144,18 @@ public class FXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //listView = new ListView<HBox>();
-    
+    //NewClass n = new NewClass("HELLO");
+    //data.add(n);
     senName.setCellValueFactory(
-    new PropertyValueFactory<Sensor,String>("name")
+    new PropertyValueFactory<Sensor,String>("nameProp")
     );
     System.out.println("Complete");
     senPath.setCellValueFactory(
-        new PropertyValueFactory<Sensor,File>("f")
+        new PropertyValueFactory<Sensor,String>("pathProp")
     );
     System.out.println("Complete");
     append.setCellValueFactory(
-         new PropertyValueFactory<Sensor,String>("appendMode")
+         new PropertyValueFactory<Sensor,String>("appendProp")
         );
     System.out.println("Complete");
     sensorTable.setItems(data);
@@ -174,6 +175,7 @@ public class FXMLController implements Initializable {
     }
     
     public static void add(Sensor s){
+            System.out.println(s.name);
             data.add(s);
     }
 }
